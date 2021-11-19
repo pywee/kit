@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ahmek/kit/funcs"
-	"github.com/ahmek/kit/types"
+	"github.com/pywee/kit/funcs"
+	"github.com/pywee/kit/types"
 )
 
 type (

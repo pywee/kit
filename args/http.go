@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"reflect"
 
-	"github.com/ahmek/kit/funcs"
-	"github.com/ahmek/kit/types"
+	"github.com/pywee/kit/funcs"
+	"github.com/pywee/kit/types"
 )
 
 // HTTPContext 请求信息封装
