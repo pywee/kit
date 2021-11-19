@@ -1,3 +1,3 @@
-module github.com/ahmek/kit
+module github.com/pywee/kit
 
 go 1.16
