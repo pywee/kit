@@ -208,7 +208,7 @@ func WriteFileString(fileName, data string) error {
 
 // WriteFile 写入数据到文件
 func WriteFile(fileName string, buf []byte) error {
-	f, err := os.OpenFile(fileName, os.O_WRONLY|os.O_TRUNC, 0600)
+	f, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0700)
 	if err != nil {
 		return err
 	}
