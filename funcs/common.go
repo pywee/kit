@@ -200,3 +200,20 @@ func RangeRand(min, max int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max) + min
 }
+
+// WriteFileString 写入数据到文件
+func WriteFileString(fileName, data string) error {
+	return WriteFile(fileName, []byte(data))
+}
+
+// WriteFile 写入数据到文件
+func WriteFile(fileName string, buf []byte) error {
+	f, err := os.OpenFile(fileName, os.O_WRONLY|os.O_TRUNC, 0600)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	_, err = f.Write(buf)
+	return err
+}
