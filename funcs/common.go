@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
-	"os"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -107,29 +107,6 @@ func Camel2Case(name string) string {
 	return str
 }
 
-// LoadFile 业务相关 载入内容文件数据
-func LoadFile(file string) ([]byte, error) {
-	f, err := os.Open(file)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	src, err := ioutil.ReadAll(f)
-	if err != nil {
-		return nil, err
-	}
-	return src, nil
-}
-
-func FileExists(file string) bool {
-	_, err := os.Stat(file)
-	if err == nil {
-		return true
-	}
-	return os.IsExist(err)
-}
-
 // IsDigit2 判断字符串是否为数字字符串
 func IsDigit2(str string) bool {
 	for _, x := range str {
@@ -201,19 +178,8 @@ func RangeRand(min, max int) int {
 	return rand.Intn(max) + min
 }
 
-// WriteFileString 写入数据到文件
-func WriteFileString(fileName, data string) error {
-	return WriteFile(fileName, []byte(data))
-}
-
-// WriteFile 写入数据到文件
-func WriteFile(fileName string, buf []byte) error {
-	f, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0700)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	_, err = f.Write(buf)
-	return err
+// IsVar 检查字符串是否为变量写法
+func IsVar(varName string) bool {
+	ok, err := regexp.MatchString(`^[a-zA-Z_]{1,}[a-zA-Z0-9]+$`, varName)
+	return err == nil && ok
 }
