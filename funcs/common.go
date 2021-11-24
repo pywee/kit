@@ -180,6 +180,9 @@ func RangeRand(min, max int) int {
 
 // IsVar 检查字符串是否为变量写法
 func IsVar(varName string) bool {
+	if strings.TrimSpace(varName) == "" {
+		return false
+	}
 	ok, err := regexp.MatchString(`^[a-zA-Z_]{1,}[a-zA-Z0-9]+$`, varName)
 	return err == nil && ok
 }
