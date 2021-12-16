@@ -16,7 +16,6 @@ import (
 
 	"github.com/pywee/kit/funcs"
 	"github.com/pywee/kit/types"
-	"gitlab.unipets.cn/server/support/types"
 )
 
 type (
