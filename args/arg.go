@@ -176,11 +176,12 @@ func StructCheck(arg interface{}) error {
 	for i := 0; i < tv.Elem().NumField(); i++ {
 		rvf := rv.Elem().Field(i)
 		tvf := tv.Elem().Field(i)
+		kind := rvf.Kind().String()
 		if required := tvf.Tag.Get("required"); len(required) > 0 {
 			if required == "default" {
 				return types.ErrorNotFoundArgs
 			}
-			if kind := rvf.Kind().String(); kind == "string" {
+			if kind == "string" {
 				if value := rvf.String(); len(value) == 0 {
 					return errors.New(required)
 				}
