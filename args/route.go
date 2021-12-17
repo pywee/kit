@@ -30,8 +30,8 @@ func (r *RouteHandle) GetAuthType() int8 {
 	return r.authType
 }
 
-// ExecRouteCBK .
-func (r *RouteHandle) ExecRouteCBK(route *HTTPContext) (interface{}, error) {
+// ExecRouterFunc .
+func (r *RouteHandle) ExecRouterFunc(route *HTTPContext) (interface{}, error) {
 	return r.fn.(RouteCBK)(route)
 }
 
