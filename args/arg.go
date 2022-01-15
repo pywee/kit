@@ -51,22 +51,23 @@ func (c *HTTPContext) PostArg(arg interface{}) error {
 	if buf, err = io.ReadAll(c.r.Body); err != nil {
 		return err
 	}
-	if len(buf) > 0 {
-		if err = json.Unmarshal(buf, arg); err != nil {
-			if strErr := err.Error(); strings.Contains(strErr, "cannot unmarshal") {
-				// 此处代码是有效的，当输出类似以下的报错时，屏蔽掉结构体名称，仅输出：
-				// json: cannot unmarshal string into Go struct field amount of type uint8
-				if idx := strings.Index(strErr, "Go struct field "); idx != -1 {
-					strErr = strErr[:idx+16]
-				}
-				if idx := strings.Index(err.Error(), "."); idx != -1 {
-					strErr += err.Error()[idx+1:]
-				}
-				err = errors.New(strErr)
-				// err = errors.New("参数值类型错误")
+	if len(buf) <= 0 {
+		return nil
+	}
+	if err = json.Unmarshal(buf, arg); err != nil {
+		if strErr := err.Error(); strings.Contains(strErr, "cannot unmarshal") {
+			// 此处代码是有效的，当输出类似以下的报错时，屏蔽掉结构体名称，仅输出：
+			// json: cannot unmarshal string into Go struct field amount of type uint8
+			if idx := strings.Index(strErr, "Go struct field "); idx != -1 {
+				strErr = strErr[:idx+16]
 			}
-			return err
+			if idx := strings.Index(err.Error(), "."); idx != -1 {
+				strErr += err.Error()[idx+1:]
+			}
+			// err = errors.New("参数值类型错误")
+			err = errors.New(strErr)
 		}
+		return err
 	}
 
 	rvf := reflect.ValueOf(arg).Elem()
@@ -85,10 +86,7 @@ func (c *HTTPContext) PostArg(arg interface{}) error {
 		// fmt.Println(rvf.Field(i).Kind(), rvf.Field(i))
 	}
 
-	if err = StructCheck(arg); err != nil {
-		return err
-	}
-	return nil
+	return StructCheck(arg)
 }
 
 // 解析 http get 请求数据
