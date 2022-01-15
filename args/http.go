@@ -1,6 +1,7 @@
 package args
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -46,6 +47,16 @@ func (ctx *HTTPContext) GetURLPath() string {
 // GetURL 获取当前url
 func (ctx *HTTPContext) GetURL() *url.URL {
 	return ctx.r.URL
+}
+
+// GetContext 获取上下文
+func (ctx *HTTPContext) GetContext() context.Context {
+	return ctx.r.Context()
+}
+
+// WithContext 加入上下文
+func (ctx *HTTPContext) WithContext(c context.Context) {
+	ctx.r = ctx.r.WithContext(c)
 }
 
 // SetAuthType 设置登录权限
