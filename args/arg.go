@@ -7,6 +7,7 @@ package args
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"reflect"
 	"regexp"
@@ -48,6 +49,7 @@ func (c *HTTPContext) PostArg(arg interface{}) error {
 		err error
 		buf []byte
 	)
+	fmt.Println(c.r)
 	if buf, err = io.ReadAll(c.r.Body); err != nil {
 		return err
 	}
