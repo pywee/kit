@@ -7,8 +7,9 @@ import (
 )
 
 var (
-	ErrorParams       = ErrJSON(1003, "不支持的参数值，请检查")
-	ErrorNotFoundArgs = ErrJSON(1004, "缺少必要参数")
+	ErrorParams        = ErrJSON(1003, "不支持的参数值，请检查")
+	ErrorNotFoundArgs  = ErrJSON(1004, "缺少必要参数")
+	ErrorRequestMethod = ErrJSON(1005, "非法请求")
 )
 
 type JSON struct {

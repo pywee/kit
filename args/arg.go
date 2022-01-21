@@ -7,7 +7,6 @@ package args
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"reflect"
 	"regexp"
@@ -45,11 +44,14 @@ type GetAPIArg struct {
 
 // 解析 http post 请求数据
 func (c *HTTPContext) PostArg(arg interface{}) error {
+	if c.r.Method != "POST" {
+		return types.ErrorRequestMethod
+	}
+
 	var (
 		err error
 		buf []byte
 	)
-	fmt.Println(c.r)
 	if buf, err = io.ReadAll(c.r.Body); err != nil {
 		return err
 	}
@@ -177,20 +179,21 @@ func StructCheck(arg interface{}) error {
 		tvf := tv.Elem().Field(i)
 		kind := rvf.Kind().String()
 		if required := tvf.Tag.Get("required"); len(required) > 0 {
+			errMessage := errors.New(required)
 			if required == "default" {
-				return types.ErrorNotFoundArgs
+				errMessage = types.ErrorNotFoundArgs
 			}
 			if kind == "string" {
 				if value := rvf.String(); len(value) == 0 {
-					return errors.New(required)
+					return errMessage
 				}
 			} else if funcs.IsKindInt(kind) {
 				if value := rvf.Int(); value == 0 {
-					return errors.New(required)
+					return errMessage
 				}
 			} else if funcs.IsKindFloat(kind) {
 				if value := rvf.Float(); value == 0 {
-					return errors.New(required)
+					return errMessage
 				}
 			}
 		}
